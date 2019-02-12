@@ -1,8 +1,10 @@
-import React, { Component } from 'react';
-import { PropTypes } from 'prop-types';
-import { connect } from 'react-redux';
-import { bindActionCreators } from 'redux';
-import { FlatList, Text, StyleSheet, View, Image } from 'react-native';
+import React, {Component} from 'react';
+import {PropTypes} from 'prop-types';
+import {connect} from 'react-redux';
+import {bindActionCreators} from 'redux';
+import {FlatList, Text, StyleSheet, View, Image} from 'react-native';
+import {Query} from 'react-apollo'
+import gql from 'graphql-tag'
 
 class ProgramView extends Component {
 
@@ -11,14 +13,39 @@ class ProgramView extends Component {
     }
 
     render() {
-        const { members } = this.props;
+        const {members} = this.props;
 
         return (
-            <View>
-                <Text>
-                    Here you'll see the program for assignations
-            </Text>
-            </View>
+            <Query query={gql ` { feed { id url description } } `}>
+                {({loading, error, data}) => {
+                    if (loading) 
+                        return <Text>Loading...</Text>;
+                    if (error) 
+                        return <Text>Error :(</Text>;
+                    
+                    // console.log(data)
+                    return (
+                        <View>
+                          
+                            <FlatList
+                                data={data.feed}
+                                renderItem={({item}) => <Text
+                                style={{
+                                flex: 1
+                            }}>{item.description}</Text>}
+                                keyExtractor=
+                                {item => item.id}/>
+                            
+                           
+                                 <Text>
+                                     Here you'll see the program for assignations
+                                 </Text>
+                        </View>
+                                    
+                    );
+                }
+            }
+            </Query>
         );
     }
 }
@@ -29,9 +56,7 @@ ProgramView.propTypes = {
 
 function mapStateToProps(state, ownProps) {
 
-    return {
-        members: state.members
-    };
+    return {members: state.members};
 }
 
 export default connect(mapStateToProps)(ProgramView);
