@@ -1,5 +1,5 @@
 export default {
-    members: [],
+    meetings: [],
     courses:[],
     ajaxCallsInProgress: 0
 };

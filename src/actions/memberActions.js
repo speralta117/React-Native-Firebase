@@ -1,15 +1,27 @@
 import * as types from './actionTypes';
-import { getMembers } from '../api/apiMember';
+import { getMeetings, saveMeeting } from '../api/apiMember';
 import memberApi from '../api/apiMock';
 
-export function loadMembersSuccess(members) {
-    return { type: types.LOAD_MEMBERS_SUCCESS, members }
+export function loadMeetingsSuccess(meetings) {
+    return { type: types.LOAD_MEMBERS_SUCCESS, meetings }
 }
 
-export function loadMembers() {
+export function addMeetingSuccess(meeting) {
+    return { type: types.ADD_MEETING_SUCCESS, meeting }
+}
+
+export function loadMeetings() {
     return function(dispatch) {
-        memberApi.getMembers().then((members) => {
-            dispatch(loadMembersSuccess(members));
+        getMeetings().then((meetings) => {
+            dispatch(loadMeetingsSuccess(meetings));
+        });        
+    }
+}
+
+export function addMeeting(date) {
+    return function(dispatch) {
+        saveMeeting(date).then((members) => {
+            dispatch(addMeetingSuccess(members));
         });        
     }
 }

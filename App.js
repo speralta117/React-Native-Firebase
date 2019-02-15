@@ -2,13 +2,13 @@ import React from 'react';
 import configureStore from './src/store/store';
 import {StyleSheet, Text, View, SafeAreaView} from 'react-native';
 import {Provider} from 'react-redux';
-import ProgramView from './src/components/ProgramView';
-import {loadMembers} from './src/actions/memberActions';
+import {loadMeetings } from './src/actions/memberActions';
 import { ApolloProvider } from 'react-apollo';
 import ApolloClientProvider from './src/providers/ApolloClientProvider';
+import AppContainer from './src/components/Navigator';
 
 const store = configureStore();
-store.dispatch(loadMembers());
+store.dispatch(loadMeetings());
 
 export default class App extends React.Component {
     render() {
@@ -17,7 +17,7 @@ export default class App extends React.Component {
                 <ApolloProvider client={ApolloClientProvider.client}>
                     <SafeAreaView style={styles.safeArea}>
                         <View style={styles.container}>
-                            <ProgramView/>
+                            <AppContainer />
                         </View>
                     </SafeAreaView>
                 </ApolloProvider>
@@ -28,7 +28,7 @@ export default class App extends React.Component {
 
 const styles = StyleSheet.create({
     container: {
-        flex: 1, backgroundColor: '#fff', alignItems: 'center', justifyContent:
+        flex: 1, backgroundColor: '#F3F3F3', justifyContent:
         'center'
     },
     safeArea: {
