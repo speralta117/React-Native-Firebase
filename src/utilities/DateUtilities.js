@@ -9,3 +9,7 @@ export function formatDate(dateString) {
 
     return parsed.format('DD-MM-YYYY');
 }
+
+export function createDate(date) {
+    return moment(new Date(date));
+}

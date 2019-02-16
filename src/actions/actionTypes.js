@@ -1,2 +1,4 @@
 export const LOAD_MEMBERS_SUCCESS = 'LOAD_MEMBERS_SUCCESS';
 export const ADD_MEETING_SUCCESS = 'ADD_MEETING_SUCCESS';
+export const API_REJECT = 'API_REJECT';
+export const ADD_TOAST = 'ADD_TOAST';

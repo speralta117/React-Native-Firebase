@@ -1,5 +1,5 @@
 export default {
     meetings: [],
-    courses:[],
+    toasterMessage:null,
     ajaxCallsInProgress: 0
 };

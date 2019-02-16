@@ -2,9 +2,12 @@ import React, { Component } from 'react';
 import { PropTypes } from 'prop-types';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
+import * as meetingActions from '../actions/memberActions';
+import { addToast } from '../actions/toasterActions';
 import { View, Text, TouchableHighlight, TextInput, StyleSheet } from 'react-native';
 import DateTimePicker from 'react-native-modal-datetime-picker';
-import { formatDate } from '../utilities/DateUtilities'
+import { formatDate, createDate } from '../utilities/DateUtilities';
+import Toaster, { ToastStyles } from 'react-native-toaster';
 
 const styles = StyleSheet.create({
     fieldContainer: {
@@ -47,8 +50,14 @@ class MeetingForm extends Component {
     }
 
     handleAddPress = () => {
-        // this.props.actions.addEvent(this.state);
-        this.props.navigation.navigate('list');
+        this.props.actions.addMeeting(this.state.from).then(()=>{
+            this.props.navigation.navigate('list');
+        }, (error) => {
+           this.props.actions.addToaster({
+            text: error.message,
+            styles: ToastStyles.error
+          });
+        });
     };
 
     handleDatePress = () => {
@@ -57,9 +66,9 @@ class MeetingForm extends Component {
         });
     }
 
-    handleDatePicked = (date) => {
+    handleDatePicked = (from) => {
         this.setState({
-            date
+            from
         });
 
         this.handleDatePickerHide();        
@@ -82,7 +91,7 @@ class MeetingForm extends Component {
                         style={[styles.text, styles.borderTop]}
                         placeholder='Event Date'
                         spellCheck={false}
-                        value={this.state.date ? formatDate(this.state.date.toString()) : ''}
+                        value={this.state.from ? formatDate(this.state.from.toString()) : ''}
                         editable={!this.state.showDatePicker}
                         onFocus={this.handleDatePress}
                     />
@@ -92,16 +101,6 @@ class MeetingForm extends Component {
                         onConfirm={this.handleDatePicked}
                         onCancel={this.handleDatePickerHide}
                     />
-                    {/* <TextInput
-                        style={styles.text}
-                        placeholder='Event Title'
-                        spellCheck={false}
-                        value={this.state.title}
-                        onChangeText={this.handleChangeTitle}
-
-                    />
-                    
-                     */}
                 </View>
                 <TouchableHighlight
                     onPress={this.handleAddPress}
@@ -109,20 +108,23 @@ class MeetingForm extends Component {
                 >
                     <Text style={styles.buttonText}>Add</Text>
                 </TouchableHighlight>
+                <Toaster message={this.props.toastMessage} />
             </View>
         );
     }
 }
 
 function mapStateToProps(state, ownProps) {
-    return {};
+    return {
+        toastMessage: state.toaster
+    };
 }
 
 function mapDispatchToProps(dispatch) {
-    return {};
-    // return {
-    //     actions: bindActionCreators(eventActions, dispatch)
-    // };
+    meetingActions.addToaster = addToast;
+    return {
+        actions: bindActionCreators(meetingActions, dispatch)
+    };
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(MeetingForm);

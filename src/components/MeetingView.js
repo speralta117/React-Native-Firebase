@@ -5,7 +5,8 @@ import { bindActionCreators } from 'redux';
 import { FlatList, Text, StyleSheet, View, Image } from 'react-native';
 import ActionButton from 'react-native-action-button';
 import MeetingDetail from './MeetingDetail';
-import { formatDate } from '../utilities/DateUtilities'
+import { formatDate } from '../utilities/DateUtilities';
+
 
 const styles = StyleSheet.create({
     container: {
@@ -45,6 +46,7 @@ class MeetingView extends Component {
                 onPress={this.handleAddEvent}
                 buttonColor="#0077B5"
             />
+            
         </View>
     }
 }
@@ -59,9 +61,11 @@ function mapStateToProps(state, ownProps) {
     meetings.forEach((elem) => {
         elem.title = `Semana del ${formatDate(elem.from)} al ${formatDate(elem.to)}`
     });
-    console.log(meetings);
 
-    return { meetings: state.meetings };
+    return { 
+        meetings: state.meetings,
+       
+    };
 }
 
 export default connect(mapStateToProps)(MeetingView);

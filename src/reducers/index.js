@@ -1,8 +1,10 @@
 import { combineReducers } from 'redux';
 import meetings from './MemberReducer';
+import toaster from './ToasterReducer';
 
 const rootReducer = combineReducers({
-    meetings
+    meetings,
+    toaster
 });
 
 export default rootReducer;

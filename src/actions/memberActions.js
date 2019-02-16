@@ -20,7 +20,7 @@ export function loadMeetings() {
 
 export function addMeeting(date) {
     return function(dispatch) {
-        saveMeeting(date).then((members) => {
+        return saveMeeting(date).then((members) => {
             dispatch(addMeetingSuccess(members));
         });        
     }
